@@ -1,21 +1,36 @@
 <template>
   <div class="search--title">Encuentra profesionales de confianza</div>
   <form  @submit.prevent="sendQuery()" class="search--container">
-    <input class="search--input" v-model="search" @focus="focus = true" @blur="focus = false" placeholder="Qué necesitas..." type="text">
-    
+    <input 
+      class="search--input" 
+      v-model="search" :class="{'is-focus': search.length > 0}" 
+      @focus="focus = true" 
+      @blur="focus = false" 
+      placeholder="Qué necesitas..." 
+      type="text"
+    >
+
     <div class="search--icon">
-      <SearchIcon v-if="!waitingQuery" @click="sendQuery()" class="search--icon-icon" :class="{'is-focus': focus}" />
-      <LoaderIcon v-if="waitingQuery" class="search--icon-icon" />
+      <SearchIcon 
+        v-if="!waitingQuery" 
+        @click="sendQuery()" class="search--icon-icon" 
+        :class="{'is-focus': 
+        focus || search.length > 0}" 
+      />
+      <LoaderIcon 
+        v-if="waitingQuery" 
+        class="search--icon-icon" 
+      />
     </div>
   </form>
-  <FilterList :list="filteredSearch" />
+  <FilterList v-model:search="search" :list="filteredSearch" />
 </template>
 <script>
-import searchList from "@/api/searchList.js";
+import { initApi } from "@/api/dummyApi.js";
 import FilterList from "@/components/FilterList";
 import SearchIcon from "@/components/icons/SearchIcon";
 import LoaderIcon from "@/components/icons/LoaderIcon";
-import {computed, ref} from 'vue';
+import {computed, ref, onMounted} from 'vue';
 
 export default {
   name: 'searchInput',
@@ -25,10 +40,16 @@ export default {
     LoaderIcon
   },
   setup() {
-    const queries = ref(searchList);
+    const queries = ref([]);
     const search = ref('');
     const focus = ref(false);
     const waitingQuery = ref(false);
+
+    onMounted(() => {
+      initApi().then((result) => {
+        queries.value = result;
+      })
+    });
 
     const filteredSearch = computed(() => {
       if (search.value != '') {
@@ -38,9 +59,12 @@ export default {
     });
 
     function sendQuery() {
-      if (search.value != '') {
+      if (search.value != '' && filteredSearch.value.length > 0) {
         //call search ajax o POST with parameter search
         waitingQuery.value = true;
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
       }
 
     }
@@ -82,7 +106,8 @@ export default {
       border: 1px solid #9B9B9B;
     }
 
-    &:focus {
+    &:focus,
+    &.is-focus {
       border: 1px solid #FF7300;
       box-shadow: 0px 0px 8px rgba(255, 115, 0, 0.2);
     }
@@ -93,14 +118,6 @@ export default {
     width: 24px;
     height: 24px;
     margin-left: -40px;
-
-    path {
-      transition: stroke .3s ease;
-    }
-
-    &.is-focus path {
-      stroke: #FF7300;
-    }
   }
 
   .search--icon-icon {
@@ -109,5 +126,13 @@ export default {
     right: 0;
     width: 100%;
     height: 100%;
+
+    path {
+      transition: stroke .3s ease;
+    }
+
+    &.is-focus path {
+      stroke: #FF7300;
+    }
   }
 </style>

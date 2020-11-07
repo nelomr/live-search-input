@@ -1,21 +1,33 @@
 <template>
-  <div v-if="list.length > 0" class="filter-list">
-    <div 
-      v-for="(item, index) in list" 
-      :key="'item'+index"
-      class="filter--item"
-    >
-      {{ item.name }}
+  <div class="filter-list">
+      <div
+        v-for="(item, index) in list"
+        :key="'item'+index"
+        :value="item.name"
+        class="filter--item"
+      >
+      <label :for="'name'+index" v-html="item.name"></label>
+      <input
+        @input="$emit('update:search', $event.target.value)"
+        :id="'name'+index"
+        type="radio"
+        :value="item.name"
+      >
     </div>
   </div>
 </template>
 <script>
+
 export default {
   name: 'FilterList',
   props: {
     list: {
       type: Array,
       defaul: []
+    },
+    search: {
+      type: String,
+      default: ''
     }
   }
 }
@@ -34,11 +46,20 @@ export default {
   }
 
   .filter--item {
-    padding: 9px 12px;
     font-size: 16px;
     font-weight: 300;
     line-height: 22px;
     color: #404040;
+
+    label {
+      display: block;
+      width: 100%;
+      padding: 9px 12px;
+    }
+
+    input {
+      display: none;
+    }
 
     &:first-child {
       background-color: #FAFAFA;
