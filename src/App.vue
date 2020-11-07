@@ -1,26 +1,26 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <SearchInput />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import SearchInput from '@/components/SearchInput.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    SearchInput
   }
 }
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #2B2B2B;
   margin-top: 60px;
 }
 </style>

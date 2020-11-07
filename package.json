@@ -18,6 +18,10 @@
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0-0"
+    "eslint-plugin-vue": "^7.0.0-0",
+    "breakpoint-sass": "^2.7.1",
+    "css-loader": "^5.0.0",
+    "sass": "^1.28.0",
+    "sass-loader": "^10.0.0"
   }
 }
