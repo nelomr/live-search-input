@@ -62,7 +62,7 @@ export default {
     const transformSearch = computed(() => {
       return filteredSearch.value.map(
           query => query.name.toLowerCase()
-          .replace(search.value.toLowerCase(), `<strong>${search.value}</strong>`));
+          .replace(search.value.toLowerCase(), `<b>${search.value}</b>`));
     });
 
     function sendQuery() {
