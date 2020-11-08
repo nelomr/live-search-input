@@ -29,11 +29,13 @@ export default {
       default: ''
     }
   },
-  methods: {
-    strippedHtml(string) {
+  setup() {
+    function strippedHtml(string) {
       let regex = /(<([^>]+)>)/ig;
       return string.replace(regex, '');
     }
+
+    return { strippedHtml }
   }
 }
 </script>
