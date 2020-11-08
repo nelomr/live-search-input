@@ -1,6 +1,6 @@
 # live-search-input
-. Componente de tipo live search realizado con vue3 y composition api
-. Filtrado de tipo contains y case insensitive
+- Componente de tipo live search realizado con vue3 y composition api
+- Filtrado de tipo contains y case insensitive
 
 Demo [https://nelomr.github.io/live-search-input](https://nelomr.github.io/live-search-input)
 
