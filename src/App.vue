@@ -13,14 +13,13 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
 
 #app {
-  font-family: 'Montserrat', sans-serif;
+  font-family: $primary-font;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2B2B2B;
+  color: $text-color;
   margin-top: 60px;
 }
 </style>

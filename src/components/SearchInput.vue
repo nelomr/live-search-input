@@ -23,7 +23,7 @@
       />
     </div>
   </form>
-  <FilterList v-model:search="search" :list="filteredSearch" />
+  <FilterList v-model:search="search" :list="transformSearch" />
 </template>
 <script>
 import { initApi } from "@/api/dummyApi.js";
@@ -53,9 +53,16 @@ export default {
 
     const filteredSearch = computed(() => {
       if (search.value != '') {
-        return queries.value.filter(query => query.name.toLowerCase().includes(search.value.toLowerCase()))
+        return queries.value.filter(
+          query => query.name.toLowerCase().includes(search.value.toLowerCase()));
       }
       return [];
+    });
+
+    const transformSearch = computed(() => {
+      return filteredSearch.value.map(
+          query => query.name.toLowerCase()
+          .replace(search.value.toLowerCase(), `<strong>${search.value}</strong>`));
     });
 
     function sendQuery() {
@@ -66,21 +73,24 @@ export default {
           location.reload();
         }, 1000);
       }
-
     }
     
-    return { queries, search, focus, filteredSearch, waitingQuery, sendQuery }
+    return { queries, search, focus, filteredSearch, waitingQuery, sendQuery, transformSearch }
   }
 }
 </script>
 
 <style lang="scss">
   .search--title {
+    max-width: 460px;
+    margin: 0 auto;
     margin-bottom: 8px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: $primary-font;
     font-weight: 600;
     font-size: 16px;
     line-height: 22px;
+    color: $title-color;
+    text-align: left;
   }
 
   .search--container {
@@ -94,22 +104,23 @@ export default {
     width: 100%;
     min-height: 22px;
     padding: 12px 44px 12px 14px;
-    background: #FFFFFF;
-    border: 1px solid #D2D2D2;
+    font-family: $primary-font;
+    background: $light-color;
+    border: 1px solid $grey-medium-color;
     box-sizing: border-box;
     border-radius: 4px;
     outline: none;
     transition: background .3s ease, border .3s ease;
 
     &:hover {
-      background: #FAFAFA;
-      border: 1px solid #9B9B9B;
+      background: $grey-color;
+      border: 1px solid $grey-dark-color;
     }
 
     &:focus,
     &.is-focus {
-      border: 1px solid #FF7300;
-      box-shadow: 0px 0px 8px rgba(255, 115, 0, 0.2);
+      border: 1px solid $orange-color;
+      box-shadow: $shadow;
     }
   }
 
@@ -132,7 +143,7 @@ export default {
     }
 
     &.is-focus path {
-      stroke: #FF7300;
+      stroke: $orange-color;
     }
   }
 </style>

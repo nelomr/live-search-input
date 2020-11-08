@@ -3,15 +3,14 @@
       <div
         v-for="(item, index) in list"
         :key="'item'+index"
-        :value="item.name"
         class="filter--item"
       >
-      <label :for="'name'+index" v-html="item.name"></label>
+      <label :for="'name'+index" v-html="item"></label>
       <input
-        @input="$emit('update:search', $event.target.value)"
+        @click="$emit('update:search', $event.target.value)"
         :id="'name'+index"
         type="radio"
-        :value="item.name"
+        :value="strippedHtml(item)"
       >
     </div>
   </div>
@@ -29,6 +28,12 @@ export default {
       type: String,
       default: ''
     }
+  },
+  methods: {
+    strippedHtml(string) {
+      let regex = /(<([^>]+)>)/ig;
+      return string.replace(regex, '');
+    }
   }
 }
 </script>
@@ -36,9 +41,11 @@ export default {
 <style lang="scss">
   .filter-list {
     max-width: 460px;
+    max-height: 280px;
     margin: -1px auto 0;
-    background: #FFFFFF;
-    border: 1px solid #D2D2D2;
+    overflow: auto;
+    background: $light-color;
+    border: 1px solid $grey-medium-color;
     border-top: none;
     box-sizing: border-box;
     border-radius: 4px;
@@ -49,12 +56,12 @@ export default {
     font-size: 16px;
     font-weight: 300;
     line-height: 22px;
-    color: #404040;
+    color: $text-color;
 
     label {
       display: block;
-      width: 100%;
       padding: 9px 12px;
+      font-family: $primary-font;
     }
 
     input {
@@ -62,7 +69,7 @@ export default {
     }
 
     &:first-child {
-      background-color: #FAFAFA;
+      background-color: $grey-color;
     }
   }
 </style>
