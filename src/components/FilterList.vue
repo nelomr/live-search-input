@@ -1,5 +1,5 @@
 <template>
-  <div class="filter-list">
+  <div v-if="list.length > 0" class="filter-list">
       <div
         v-for="(item, index) in list"
         :key="'item'+index"
@@ -64,6 +64,10 @@ export default {
       display: block;
       padding: 9px 12px;
       font-family: $primary-font;
+
+      b {
+        font-weight: bold;
+      }
     }
 
     input {
