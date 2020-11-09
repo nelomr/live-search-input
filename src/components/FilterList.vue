@@ -59,6 +59,7 @@ export default {
     font-weight: 300;
     line-height: 22px;
     color: $text-color;
+    cursor: pointer;
 
     label {
       display: block;
