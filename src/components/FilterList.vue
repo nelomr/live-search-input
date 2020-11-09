@@ -59,12 +59,12 @@ export default {
     font-weight: 300;
     line-height: 22px;
     color: $text-color;
-    cursor: pointer;
 
     label {
       display: block;
       padding: 9px 12px;
       font-family: $primary-font;
+      cursor: pointer;
 
       b {
         font-weight: bold;
