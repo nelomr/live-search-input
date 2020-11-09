@@ -23,7 +23,11 @@
       />
     </div>
   </form>
-  <FilterList v-model:search="search" :list="transformSearch" />
+  <FilterList 
+    @input="removePersonData" 
+    v-model:search="search" 
+    :list="transformSearch" 
+  />
   <CardItem v-if="person && search" :person="person"/>
 </template>
 <script>
@@ -47,12 +51,19 @@ export default {
     const search = ref('');
     const focus = ref(false);
     const waitingQuery = ref(false);
-    const person = ref(null);
+    let person = ref(null);
 
     onMounted(() => {
       initApi().then((result) => {
         queries.value = result;
       })
+    });
+
+    const removePersonData = computed(() => {
+      if (search.value === '') {
+        return person.value = null;
+      }
+      return null;
     });
     
     const filteredSearch = computed(() => {
@@ -87,7 +98,7 @@ export default {
       return filteredSearch.value[0].url.replace(/\D/g,'');
     }
     
-    return { queries, search, focus, filteredSearch, waitingQuery, sendQuery, transformSearch, person }
+    return { queries,removePersonData, search, focus, filteredSearch, waitingQuery, sendQuery, transformSearch, person }
   }
 }
 </script>
