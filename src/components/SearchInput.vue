@@ -24,10 +24,12 @@
     </div>
   </form>
   <FilterList v-model:search="search" :list="transformSearch" />
+  <CardItem v-if="person && search" :person="person"/>
 </template>
 <script>
-import { initApi } from "@/api/dummyApi.js";
+import { initApi, getPerson } from "@/api/dummyApi.js";
 import FilterList from "@/components/FilterList";
+import CardItem from "@/components/CardItem";
 import SearchIcon from "@/components/icons/SearchIcon";
 import LoaderIcon from "@/components/icons/LoaderIcon";
 import {computed, ref, onMounted} from 'vue';
@@ -37,6 +39,7 @@ export default {
   components: {
     SearchIcon,
     FilterList,
+    CardItem,
     LoaderIcon
   },
   setup() {
@@ -44,13 +47,14 @@ export default {
     const search = ref('');
     const focus = ref(false);
     const waitingQuery = ref(false);
+    const person = ref(null);
 
     onMounted(() => {
       initApi().then((result) => {
         queries.value = result;
       })
     });
-
+    
     const filteredSearch = computed(() => {
       if (search.value != '') {
         return queries.value.filter(
@@ -69,13 +73,21 @@ export default {
       if (search.value != '' && filteredSearch.value.length > 0) {
         //call search ajax o POST with parameter search
         waitingQuery.value = true;
-        setTimeout(() => {
-          location.reload();
-        }, 1000);
+        //this have sense only with this dummyapi
+        let id = getID();
+
+        getPerson(id).then((result) => {
+          person.value = result;
+          waitingQuery.value = false;
+        })
       }
     }
+
+    function getID() {
+      return filteredSearch.value[0].url.replace(/\D/g,'');
+    }
     
-    return { queries, search, focus, filteredSearch, waitingQuery, sendQuery, transformSearch }
+    return { queries, search, focus, filteredSearch, waitingQuery, sendQuery, transformSearch, person }
   }
 }
 </script>
@@ -137,6 +149,7 @@ export default {
     right: 0;
     width: 100%;
     height: 100%;
+    cursor: pointer;
 
     path {
       transition: stroke .3s ease;

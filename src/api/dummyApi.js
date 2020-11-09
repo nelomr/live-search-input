@@ -1,5 +1,5 @@
 import client from '@/services/client.js';
-const path = 'people/';
+let path = 'people/';
 
 export function initApi(){
   return  client.get(path)
@@ -10,3 +10,14 @@ export function initApi(){
       throw error;
     })
 }
+
+export function getPerson(id){
+  return  client.get(`${path}${id}/`)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      throw error;
+    })
+}
+
